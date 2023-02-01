@@ -1,0 +1,44 @@
+<div class="container-expenses__comment">
+    <div class="container-expenses__comment__to-read">
+        <div class="container-expenses__comment__to-read__local">
+            <p class="container-expenses__comment__to-read__local__internal">
+                {{comment.type}}
+            </p>
+            <p class="container-expenses__comment__to-read__local__number">
+                {{comment.comment}}
+            </p>
+        </div>
+        <div class="container-expenses__comment__to-read__general">
+            <p class="container-expenses__comment__to-read__general__company">
+                {{comment.author}}
+            </p>
+            <p class="container-expenses__comment__to-read__general__date">
+                {{comment.date | date:'dd MMM yyyy hh:MM'}}
+            </p>
+            <div class="container-expenses__comment__to-read__general__icons">
+                <fa-icon [icon]="faPen" class="container-expenses__comment__to-read__general__icons__edit"></fa-icon>
+                <fa-icon [icon]="faTrash" class="container-expenses__comment__to-read__general__icons__trash"></fa-icon>
+            </div>
+        </div>
+    </div>
+    <div class="container-expenses__comment__to-fill" [formGroup]="commentForm">
+        <select class="container-expenses__comment__to-fill__select"
+            formControlName="selectCommentControl"
+            (change)="enableCommentInput()">
+                <option value="Select comment type">Select comment type</option>
+                <option value="Short message">Short message</option>
+                <option value="Longer statement">Longer statement</option>
+        </select>
+        <input class="container-expenses__comment__to-fill__message" 
+            formControlName="inputCommentControl" 
+            type="text" 
+            placeholder="Type comment"
+            [(ngModel)]="commentText"
+            >
+        <button class="container-expenses__comment__to-fill__button"
+            [class.disabled]="!commentText"
+            >Add
+        </button>
+            
+    </div>
+</div>
