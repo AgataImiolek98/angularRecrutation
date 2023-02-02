@@ -9,8 +9,8 @@ import { Categories, CommentDetails, Cost, CostItem } from "../models/costs.conf
 
 export class CategoriesService {
     categories$: BehaviorSubject<Categories> = new BehaviorSubject<Categories>(null);
-    costItems$: BehaviorSubject<CostItem>= new BehaviorSubject<CostItem>(null);
     cost$: BehaviorSubject<Cost> = new BehaviorSubject<Cost>(null);
+    costItems$: BehaviorSubject<CostItem>= new BehaviorSubject<CostItem>(null);
     comments$: BehaviorSubject<CommentDetails> = new BehaviorSubject<CommentDetails>(null);
 
     constructor (private http: HttpClient) {}

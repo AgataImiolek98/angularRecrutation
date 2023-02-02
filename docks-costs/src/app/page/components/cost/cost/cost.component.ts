@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { BehaviorSubject, combineLatest, filter, startWith, takeUntil } from 'rxjs';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { BehaviorSubject, combineLatest, startWith, Subject, takeUntil } from 'rxjs';
 import { Categories, Cost } from 'src/app/page/models/costs.config.interface';
 import { PaymentCurrency } from 'src/app/page/models/exchange-rates.config.interface';
 import { CategoriesService } from 'src/app/page/services/categories.service';
@@ -15,19 +14,19 @@ import Decimal from "decimal.js";
   styleUrls: ['./cost.component.scss']
 })
 
-export class CostComponent implements OnInit, AfterViewInit  {
+export class CostComponent implements AfterViewInit, OnDestroy  {
   @Input() cost: Cost;
   categories$: BehaviorSubject<Categories> = this.categoriesService.categories$;
-  amountControl: FormControl = new FormControl(null);
   selectedPaymentCurrency$: BehaviorSubject<PaymentCurrency> = this.exchangeRateService.selectedPaymentCurrency$;
   
   screenedTotal: string;
   quotedTotal: string;
-  totalQuotedInUsd: string = 'skhj';
-  totalScreenedInUsd: string = 'sjhdhg';
+  totalQuotedInUsd: string;
+  totalScreenedInUsd: string;
 
+  unsubscribe$: Subject<void> = new Subject<void>()
 
-  @ViewChildren('pojedynczyKomponent') public costItemComponentList: QueryList<CostItemComponent>
+  @ViewChildren('singleComponent') public costItemComponentList: QueryList<CostItemComponent>
 
   constructor(
     private currencyAmountService: CurrencyAmountService,
@@ -35,43 +34,36 @@ export class CostComponent implements OnInit, AfterViewInit  {
     private exchangeRateService: ExchangeRatesService,
     ) { }
     
-    ngOnInit() {
-      combineLatest([
-        this.amountControl.valueChanges,
-        this.currencyAmountService.selectedCurrencyExchangeRate$
-      ])
-      .subscribe(([amount, selectedCurrencyExchangeRate]) => {
-        console.log(this.currencyAmountService.getValueInUsd(amount, selectedCurrencyExchangeRate))
-      });
-
-    } 
 
     ngAfterViewInit(): void {
       this.costItemComponentList.forEach(item => {
         this.quotedTotal = this.costItemComponentList
         .map(item => item.quotedCost.amount)
         .reduce((a, b) => { return Decimal.add(a, b).toNumber().toFixed(2) }, '0')
-console.log(this.currencyAmountService.selectedCurrencyExchangeRate$.getValue())
-        this.totalQuotedInUsd = this.currencyAmountService.getValueInUsd(this.quotedTotal, this.currencyAmountService.selectedCurrencyExchangeRate$.getValue())
+
+        this.currencyAmountService.selectedCurrencyExchangeRate$.pipe(
+          takeUntil(this.unsubscribe$)
+        ).subscribe(selectedCurrencyExchangeRate => {
+          this.totalQuotedInUsd = this.currencyAmountService.getValueInUsd(this.quotedTotal, selectedCurrencyExchangeRate);
+        })
 
         combineLatest([
           this.currencyAmountService.selectedCurrencyExchangeRate$,
           item.screenedCostControl.valueChanges.pipe(startWith('0'))
         ]).pipe(
-          // takeUntil(false)
+          takeUntil(this.unsubscribe$)
         ).subscribe(([selectedCurrencyExchangeRate, value]) => {
           this.screenedTotal = this.costItemComponentList
-            .map(item => item.screenedCostControl.value)
-            .reduce((a, b) => { return Decimal.add(a, b).toNumber().toFixed(2) }, '0');
+          .map(item => item.screenedCostControl.value)
+          .reduce((a, b) => { return Decimal.add(a, b).toNumber().toFixed(2) }, '0');
 
-            this.totalScreenedInUsd = this.currencyAmountService.getValueInUsd(this.screenedTotal, selectedCurrencyExchangeRate);
+          this.totalScreenedInUsd = this.currencyAmountService.getValueInUsd(this.screenedTotal, selectedCurrencyExchangeRate);
         });
-
-        this.currencyAmountService.selectedCurrencyExchangeRate$.pipe(
-          // takeUntil(false)
-        ).subscribe(selectedCurrencyExchangeRate => {
-          this.totalQuotedInUsd = this.currencyAmountService.getValueInUsd(this.quotedTotal, selectedCurrencyExchangeRate);
-        })
       })
+    }
+
+    ngOnDestroy(): void {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
     }
   }

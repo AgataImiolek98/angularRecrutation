@@ -16,7 +16,6 @@ export class CommentComponent {
     commentText: string = "";
     @Input() comment: CommentDetails
 
-
     defaultSelectValue: string = "Select comment type"
     commentForm: FormGroup = new FormGroup({
       'selectCommentControl': new FormControl(this.defaultSelectValue),

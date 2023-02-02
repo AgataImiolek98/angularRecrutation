@@ -31,8 +31,6 @@ export class CostItemComponent implements OnInit {
 
     selectedPaymentCurrency$: BehaviorSubject<PaymentCurrency> = this.exchangeRateService.selectedPaymentCurrency$
 
-    appOnlyNumberDirective: OnlyNumberDirective;
-
     constructor(
         private exchangeRateService: ExchangeRatesService,
         private categoriesService: CategoriesService,
@@ -53,7 +51,6 @@ export class CostItemComponent implements OnInit {
         })
         
     }
-
 
     showComment() {
         this.showMe=!this.showMe;
