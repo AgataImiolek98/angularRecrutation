@@ -1,0 +1,59 @@
+@import '../../../scss/variables.scss';
+@import '../../../scss/sourceCurrency.scss';
+
+.container-expenses {
+    display: flex;
+    flex-direction: column;  
+
+    &__accounts {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px;
+
+        &__item {
+            width: 100%;
+
+            &__source-currency {
+                @include sourceCurrency;
+            }
+
+            &__comment {
+                display: flex;
+                justify-content: center;
+
+                &__icon {
+                    color: $comment-color;
+                    cursor: pointer;
+                    }
+    
+                &__icon:hover {
+                        color: $color-black;
+                    }
+            }
+
+            &__quoted-container, &__screened-container  {
+                display: flex;
+                flex-direction: column;
+                
+                &__amount {
+                    display: flex;
+                    align-items: center;
+                    padding: 2px;
+
+                    &__source-currency {
+                        @include sourceCurrency;
+
+                    }
+
+                    &__counter {
+                        @include sourceCurrency;
+                    }
+                }
+            }
+
+        }
+    
+    }
+
+}

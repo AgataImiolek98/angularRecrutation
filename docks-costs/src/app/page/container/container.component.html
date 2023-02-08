@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="container__cost">
+        <div class="container__cost__header">
+            <p class="container__cost__header__title">COST</p>
+            <div class="container__cost__header__converter">
+                <p class="container__cost__header__converter__text">Currency</p>
+                    <select 
+                        class="container__cost__header__converter__select"
+                        [formControl]="paymentCurrencyControl"
+                        >
+                            <option 
+                                class="container__cost__header__converter__select__currency" 
+                                *ngFor="let paymentCurrency of (exchangeRates$ | async)?.paymentCurrencies"
+                                [ngValue]="paymentCurrency"
+                                >
+                                {{ paymentCurrency.toCurrency}}
+                            </option>
+                    </select>
+                <div class="container__cost__header__converter__result">
+                    1{{(categories$ | async)?.baseCurrency?.currency}} = 
+                    {{ selectedCurrencyExchangeRate$ | async }} 
+                    {{ paymentCurrencyControl.value.toCurrency }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-cost *ngFor="let cost of (costs$ | async)" [cost]="cost"></app-cost>
+
+</div>

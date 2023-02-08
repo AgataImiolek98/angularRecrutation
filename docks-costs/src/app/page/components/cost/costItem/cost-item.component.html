@@ -1,0 +1,67 @@
+<section class="container-expenses">
+    <div class="container-expenses__accounts">
+            <p class="container-expenses__accounts__item">{{costItem.name}}</p>
+            <p class="container-expenses__accounts__item">{{costItem.costItemAlias.accountingCode}}</p>
+            <div class="container-expenses__accounts__item"> 
+                <div class="container-expenses__accounts__item__quoted-container">
+                    <div class="container-expenses__accounts__item__quoted-container__amount">
+                        <p class="container-expenses__accounts__item__quoted-container__amount__source-currency"> 
+                            {{ (selectedPaymentCurrency$ | async).toCurrency }} 
+                        </p>
+                        <p class="container-expenses__accounts__item__quoted-container__amount"> 
+                            {{ quotedCost?.amount }} 
+                        </p>
+                    </div>
+            
+                   <div class="container-expenses__accounts__item__quoted-container__amount">
+                        <p class="container-expenses__accounts__item__quoted-container__amount__counter">
+                            {{ (categories$ | async)?.baseCurrency?.currency }} {{ quotedAmountInUSD }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-expenses__accounts__item"> 
+                <div class="container-expenses__accounts__item__screened-container">
+                    <input class="container-expenses__accounts__item__screened-container__amount"
+                        [formControl]="screenedCostControl"                     
+                        [(ngModel)]="screenedCost.amount"
+                        appOnlyNumberDirective
+                        />
+                    <div class="container-expenses__accounts__item__screened-container__amount">
+                        <p class="container-expenses__accounts__item__screened-container__amount__counter">
+                            {{(categories$ | async)?.baseCurrency?.currency }} {{screenedAmountInUSD}}
+                        </p>
+                    </div>
+                </div>
+            </div>   
+
+            <div class="container-expenses__accounts__item">
+                <div class="container-expenses__accounts__item__comment">
+                    <fa-icon class="container-expenses__accounts__item__comment__icon"
+                        [icon]="faComment" 
+                        (click)="showComment()"
+                        >
+                    </fa-icon>                
+                    <div class="container-expenses__accounts__item__comment__number"
+                        *ngIf="costItem.comments;else no_comments"> 
+                        {{costItem.comments.length}}
+                    </div>
+                    <ng-template class="container-expenses__accounts__item__comment__number"
+                        #no_comments>0
+                    </ng-template>
+                </div>
+            </div>
+    </div>
+
+    <div class="container-expenses__comment">
+        <div *ngIf="showMe">
+            <app-comment
+                *ngFor="let comment of costItem.comments"
+                [comment]="comment"
+                >
+            </app-comment>
+        </div>
+    </div>
+
+</section>

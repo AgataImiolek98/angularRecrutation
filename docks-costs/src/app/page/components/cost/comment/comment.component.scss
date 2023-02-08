@@ -1,0 +1,105 @@
+@import '../../../scss/variables.scss';
+
+.container-expenses__comment {
+    display: flex;
+    flex-direction: column;
+    background-color: $second-color;
+    padding: 10px 5px;
+
+    &__to-read {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $comment-color;
+        align-items: center;
+        height: 30px;
+        margin-bottom: 5px;
+
+        &__local {
+            display: flex; 
+            justify-content: space-between;
+            width: 200px;
+
+            &__external {
+                padding: 0 8px;
+                border: 1px solid $color-black;
+                border-radius: 5px;
+                background-color: $color-black;
+                color: $color-white;
+            }
+
+            &__internal {
+                padding: 0 8px;
+                border: 1px solid $comment-color;
+                border-radius: 5px;
+                background-color: $color-white;
+                color: $comment-color;
+            }
+
+            &__number {
+                color: $color-black;
+            }
+
+        }
+
+        &__general {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 300px;
+
+            &__date {
+                color: darken($comment-color, 25%);           
+            }
+
+            &__icons {
+                color: $comment-color;
+                padding-right: 20px;
+
+                &__trash {
+                    padding-left: 10px;
+                    cursor: pointer;
+                }
+
+                &__trash:hover {
+                    color: $color-black;
+                }
+
+                &__edit {
+                    cursor: pointer;
+                }
+
+                &__edit:hover {
+                    color: $color-black;
+                }
+            }
+
+        }        
+    }
+
+    &__to-fill {
+            display: flex;
+
+        &__select {
+            color: darken($comment-color, 25%);
+        }
+
+        &__message {
+            flex-grow: 1;
+            margin: 0 7px;
+        }
+
+        &__button {
+            background-color: $main-color;
+            border: none;                 
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        &__button.disabled {
+            background-color: lighten($color: $main-color, $amount: 10);
+            color: $color-white;
+            cursor: not-allowed;
+        }
+    }
+
+}

@@ -1,0 +1,46 @@
+@import '../../../scss/variables.scss';
+@import '../../../scss/sourceCurrency.scss';
+
+.container-expenses {
+    border: 1px solid $comment-color;
+    border-top: none;
+
+
+    &__headers {
+        display: flex;
+        justify-content: space-between;
+        background-color: $main-color;
+        color: $color-white;
+        padding: 10px 5px;
+    
+        &__item {
+            width: 100%;
+            }
+        }
+    
+    &__total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 2px solid $main-color;
+        padding: 10px 5px;
+
+                
+        &__result {
+            width: 100%;
+
+            &__source-currency {
+                @include sourceCurrency;
+
+                &__span {
+                    color: black;
+
+                }
+            }
+
+            &__amount {
+                @include sourceCurrency;
+            }
+        }
+    }       
+}

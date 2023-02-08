@@ -1,0 +1,6 @@
+@import './variables.scss';
+
+@mixin sourceCurrency {
+    font-size: .7rem;
+    color: $comment-color;
+}

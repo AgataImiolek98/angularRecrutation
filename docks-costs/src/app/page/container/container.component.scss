@@ -1,0 +1,30 @@
+@import '../scss/variables.scss';
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+
+    &__cost {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            
+        &__converter {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 350px;   
+            
+            &__select {
+                width: 30%;
+            }
+        }
+        }
+    }
+}

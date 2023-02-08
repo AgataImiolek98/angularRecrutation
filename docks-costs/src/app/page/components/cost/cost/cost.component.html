@@ -1,0 +1,47 @@
+<div class="container-expenses"> 
+    <section class="container-expenses__headers">
+        <p class="container-expenses__headers__item">{{cost.name}}</p>
+        <p class="container-expenses__headers__item">Account Code</p>
+        <p class="container-expenses__headers__item">Quoted</p>
+        <p class="container-expenses__headers__item">Screened</p>
+        <p class="container-expenses__headers__item"></p>
+    </section>
+
+    <app-cost-item 
+        *ngFor="let costItem of cost.costItems"
+        [costItem]="costItem"
+        #singleComponent
+        >
+    </app-cost-item>
+    
+    <section class="container-expenses__total">
+        <p class="container-expenses__total__result">Total</p>
+        <div class="container-expenses__total__result"></div>
+        <div class="container-expenses__total__result">
+            <p class="container-expenses__total__result__source-currency">
+                {{ (selectedPaymentCurrency$ | async).toCurrency }}
+                <span class="container-expenses__total__result__source-currency__span"> 
+                    {{quotedTotal | number: '1.1-2'}} 
+                </span>
+            </p>
+            <div class="container-expenses__total__result__amount">
+                {{(categories$ | async)?.baseCurrency?.currency }} {{totalQuotedInUsd}}
+            </div>
+        </div>
+        <div class="container-expenses__total__result">
+            <p class="container-expenses__total__result__source-currency">
+                {{ (selectedPaymentCurrency$ | async).toCurrency }}
+                <span class="container-expenses__total__result__source-currency__span">
+                    {{screenedTotal | number: '1.1-2'}}
+                </span>
+            </p>
+            <div class="container-expenses__total__result__amount">
+                {{(categories$ | async)?.baseCurrency?.currency }} {{totalScreenedInUsd}}
+            </div>
+        </div>
+
+        <div class="container-expenses__total__result"></div>
+
+    </section>
+    
+</div>
